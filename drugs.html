@@ -41,32 +41,38 @@
         var lon = 82.61461;
         var zoom = 12;
 
+        var southWest = new L.LatLng(49.84307, 82.36965),
+            northEast = new L.LatLng(50.07984, 82.87571),
+            bounds = new L.LatLngBounds(southWest, northEast);
+
         // create a map in the "map" div, set the view to a given place and zoom
-        var map = L.map('map').setView([lat, lon], zoom);
+        var map = L.map('map', {
+            maxBounds: bounds
+        }).setView([lat, lon], zoom);
 
 
         // add an OpenStreetMap tile layer
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-            maxZoom: 2,
-            minZoom: 13
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            //, maxZoom: 18
+            //, minZoom: 12
         }).addTo(map);
 
         // Initialize the FeatureGroup to store editable layers
-        var drawnItems = new L.FeatureGroup();
-        map.addLayer(drawnItems);
+//        var drawnItems = new L.FeatureGroup();
+//        map.addLayer(drawnItems);
 
         // Initialize the draw control and pass it the FeatureGroup of editable layers
-        var drawControl = new L.Control.Draw({
-            draw: {
-                polygon: false,
-                rectangle: false,
-                circle: false
-            },
-            edit: {
-                featureGroup: drawnItems
-            }
-        });
+//        var drawControl = new L.Control.Draw({
+//            draw: {
+//                polygon: false,
+//                rectangle: false,
+//                circle: false
+//            },
+//            edit: {
+//                featureGroup: drawnItems
+//            }
+//        });
 
         var popup = L.popup();
 
@@ -75,29 +81,30 @@
                     .setLatLng(e.latlng)
                     .setContent("You clicked the map at " + e.latlng.toString())
                     .openOn(map);
+            console.log(e.latlng);
         });
 
-        map.on('draw:created', function (e) {
-            console.log(e);
-            var type = e.layerType,
-                    layer = e.layer;
+//        map.on('draw:created', function (e) {
+//            console.log(e);
+//            var type = e.layerType,
+//                    layer = e.layer;
+//
+//
+//            $("#markerModal").modal({
+//                backdrop: false
+//            });
+//            $("#lat").val(layer._latlng.lat);
+//            $("#lon").val(layer._latlng.lng);
+//
+//
+//            if (type === 'marker') {
+//                layer.bindPopup('A popup!');
+//            }
+//
+//            drawnItems.addLayer(layer);
+//        });
 
-
-            $("#markerModal").modal({
-                backdrop: false
-            });
-            $("#lat").val(layer._latlng.lat);
-            $("#lon").val(layer._latlng.lng);
-
-
-            if (type === 'marker') {
-                layer.bindPopup('A popup!');
-            }
-
-            drawnItems.addLayer(layer);
-        });
-
-        map.addControl(drawControl);
+//        map.addControl(drawControl);
     </script>
     </body>
 </html>
